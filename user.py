@@ -7,15 +7,31 @@ def add_games(day, month  ):
 
 conn = sqlite3.connect('games.sqlite')
 cur = conn.cursor()
+
+
+# Do some setup
+cur.executescript('''
+DROP TABLE IF EXISTS TEAMS;
+DROP TABLE IF EXISTS GAMES;
+
+CREATE TABLE IF NOT EXISTS TEAMS (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    NAME TEXT UNIQUE,      
+    CLUB_ID INTEGER UNIQUE ,
+    LEAGUE TEXT,
+    PHOTOSTORE TEXT);
+CREATE TABLE IF NOT EXISTS GAMES(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    WINNER INTEGER,
+    HOMETEAM_ID INTEGER,
+    AWAYTEAM_ID INTEGER);
+        ''')
+
+
 games = mlbgame.games(2018, 6, 1)
 league_info = mlbgame.info.league_info()
 team_info = mlbgame.info.team_info()
 
-cur.execute('''
-CREATE TABLE IF NOT EXISTS TEAMS (NAME TEXT, CLUB_ID TEXT , LEAGUE TEXT, PHOTOSTORE TEXT)''')
-
-cur.execute('''
-CREATE TABLE IF NOT EXISTS GAMES (ID TEXT, HOMETEAM TEXT, AWAYTEAM TEXT , SCORE TEXT, HOMETEAM_ID TEXT, AWAYTEAM_ID TEXT)''')
 
 for team in team_info:
     cur.execute('''INSERT INTO TEAMS (NAME, CLUB_ID, LEAGUE, PHOTOSTORE)
