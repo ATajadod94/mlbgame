@@ -1,0 +1,1 @@
+games = mlbgame.games(2018, 6, 1)

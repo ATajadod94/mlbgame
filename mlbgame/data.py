@@ -6,12 +6,9 @@ gets the data from mlb.com.
 """
 
 import os
-try:
-    from urllib.request import urlopen
-    from urllib.error import HTTPError
-except ImportError:
-    from urllib2 import urlopen, HTTPError
 
+from urllib.request import urlopen
+from urllib.error import HTTPError
 
 # Templates For URLS
 BASE_URL = ('http://gd2.mlb.com/components/game/mlb/'
